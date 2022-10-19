@@ -1,0 +1,63 @@
+h3 {
+  color: red;
+}
+
+.row > li {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a {
+  display: flex;
+  height: 200px;
+  width: 200px;
+  background-color: rgb(218, 163, 231);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+img {
+  height: 50px;
+  width: 50px;
+  text-decoration: none;
+}
+
+ion-icon {
+  height: 50px;
+  width: 50px;
+  text-decoration: none;
+}
+
+.row > li:hover .overlay {
+  cursor: pointer;
+  visibility: visible;
+}
+
+.overlay {
+  background-color: rgba(167, 115, 115, 0.9);
+  position: fixed;
+  height: 200px;
+  width: 200px;
+  visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 300px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  height: 50px;
+  background-color: black;
+  color: white;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,1 @@
+$('a').css('text-decoration','none');
