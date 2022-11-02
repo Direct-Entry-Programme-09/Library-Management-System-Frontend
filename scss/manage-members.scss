@@ -16,21 +16,28 @@ a>ion-icon{
     top: 3px;
 }
 
-.table{
+tbody tr:focus{
+  background-color: grey;
+}
+
+#tbl-members{
     th:first-child,
     tbody td:first-child{
-        width: 75px;
-        text-align: center;
+      max-width: 170px;
+      min-width: 110px;
+      word-break: keep-all;//when becoming thin word should not break
+      white-space: nowrap;
+      text-overflow: ellipsis;//to show the overflow as three dots
+      overflow: hidden;
     }
-}
-.table{
+
     th:nth-child(2),
     tbody td:nth-child(2){
         width: 250px;
         text-align: left;
     }
-}
-.table{
+
+
     th:nth-child(4),
     tbody td:nth-child(4){
         width: 150px;
@@ -38,3 +45,8 @@ a>ion-icon{
         
     }
 }
+.empty tfoot{
+    display: table-footer-group;
+}
+
+

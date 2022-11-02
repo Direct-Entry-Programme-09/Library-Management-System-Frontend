@@ -16,22 +16,32 @@ a > ion-icon {
   top: 3px;
 }
 
-.table th:first-child,
-.table tbody td:first-child {
-  width: 75px;
-  text-align: center;
+tbody tr:focus {
+  background-color: grey;
 }
 
-.table th:nth-child(2),
-.table tbody td:nth-child(2) {
+#tbl-members th:first-child,
+#tbl-members tbody td:first-child {
+  max-width: 170px;
+  min-width: 110px;
+  word-break: keep-all;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#tbl-members th:nth-child(2),
+#tbl-members tbody td:nth-child(2) {
   width: 250px;
   text-align: left;
 }
-
-.table th:nth-child(4),
-.table tbody td:nth-child(4) {
+#tbl-members th:nth-child(4),
+#tbl-members tbody td:nth-child(4) {
   width: 150px;
   text-align: center;
+}
+
+.empty tfoot {
+  display: table-footer-group;
 }
 
 /*# sourceMappingURL=manage-members.css.map */

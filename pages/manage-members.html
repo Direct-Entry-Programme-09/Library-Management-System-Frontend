@@ -22,9 +22,9 @@
     <a href="../index.html"><ion-icon name="home-outline"></ion-icon></a>
     <button type="button mt-3" class="btn btn-primary">+New Member</button>
     <div class="input-group flex-nowrap mt-3">
-        <input type="text" class="form-control" placeholder="Enter id, name, adress, contact" >
+        <input id="txt-search" type="text" class="form-control" placeholder="Enter id, name, adress, contact" >
     </div>
-    <table class="table table-hover mt-3">
+    <table class="table table-hover mt-3" id="tbl-members">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -34,26 +34,32 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td >M001</td>
-            <td>Nipuni Jayathilaka</td>
-            <td>Galle road, Panadura</td>
-            <td>076-1324568</td>
-          </tr>
-          <tfoot>
-            <td colspan="4 " class="text-center">There are no members to show</td>
-          </tfoot>
           
         </tbody>
+        <tfoot>
+            <tr>
+              <td colspan="4 " id="loader" class="text-center">There are no members to show</td>
+            </tr>
+        </tfoot>
       </table>
-      <nav class="d-flex justify-content-center">
+
+      <nav id="pagination" class="d-flex justify-content-center ">
         <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          
         </ul>
       </nav>
+      <div class="bottom-0 end-0 toast-container">
+        <div  id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <strong class="me-auto">Bootstrap</strong>
+              <small class="text-muted">11 mins ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              Something went wrong!
+            </div>
+          </div>
+      </div>
+      
 </body>
 </html>
