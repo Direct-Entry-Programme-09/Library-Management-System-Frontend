@@ -47,7 +47,25 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0
 
       - name: Deploye the dist.zip
-        run: gcloud compute scp --zone="asia-south1-a" dist.zip root@dep-9-vm:/opt
+        run: gcloud compute scp --zone="asia-south1-a" dist.zip root@dep-9-vm:/opt/apache/apache-tomcat-10.1.1/webapps/lms-backend
+      
+      - name: Cleaning up
+        run: > 
+          gcloud compute ssh --zone="asia-south1-a" dep-9-vm
+          --command="rm -r /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/css 
+          /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/pages 
+          /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/js 
+          /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/index.html"
+
+      - name: Extracting the dist.zip
+        run: gcloud compute ssh --zone="asia-south1-a" dep-9-vm 
+          --command="sudo unzip /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/dist.zip"
+      
+     
+
+
+
+
 
 
 
