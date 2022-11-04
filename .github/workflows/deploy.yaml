@@ -1,0 +1,37 @@
+# to make the hook (listener) to the pipe line
+
+name: "CI/CD pipeline for lms frontend"
+on: # adding a listener to listen to the push events that do to the main branche
+  push:
+    branches:
+      - main
+
+# giving the jobs and steps
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checking out the repo
+        uses: actions/checkout@v3
+
+      - name: Installing Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # we use this 18 node version in our app
+
+      - name: Installing SASS # download sass
+        run: npm i -g sass
+
+      - name: Compiling scss files to css 
+        run: sass scss:css
+      
+      - name: Zipping to deploy 
+        run: zip -r dist.zip css pages js index.html
+      
+      - name: Testing
+        run: ls -la .
+
+
+
+
