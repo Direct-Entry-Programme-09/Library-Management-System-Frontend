@@ -52,7 +52,7 @@ jobs:
       - name: Cleaning up
         run: > 
           gcloud compute ssh --zone="asia-south1-a" dep-9-vm
-          --command="rm -r /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/css 
+          --command="sudo rm -r /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/css 
           /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/pages 
           /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/js 
           /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/index.html"
