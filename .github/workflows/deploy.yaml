@@ -12,27 +12,40 @@ jobs:
     runs-on: ubuntu-latest # to run build use this machine
 
     steps:
-      - uses: actions/checkout@v3 # from the https://github.com/marketplace/actions/checkout
-      - uses: actions/setup-node@v3
+      - name: Checking out the latest commit # using name we can give every action a name it is not a must
+        uses: actions/checkout@v3 # from the https://github.com/marketplace/actions/checkout
+      - name: Installing NodeJs
+        uses: actions/setup-node@v3
         with:
           node-version: 18 # set our node version https://github.com/marketplace/actions/setup-node-js-environment
-
-      - run: npm install -g sass # command to install sass
-
-      - run: sass scss:css # convert scss to css
-
-      - run: mkdir dist # make dist directory
-
-      - run: cp -r css pages js index.html dist/ # copy below file to the dist directory
+      - name:  Installing SASS
+        run: npm install -g sass # command to install sass
+      - name: 'Compiling *.scss to *.css'
+        run: sass scss:css # convert scss to css
+      - name: Creating the dist directory
+        run: mkdir dist # make dist directory
+      - name: Copying everything to the dist directory
+        run: cp -r css pages js index.html dist/ # copy below file to the dist directory
       # - run: cp -r pages dist/ these all can be copy using above one line
       # - run: cp -r js dist/
       # - run: cp index.html dist/
 
       # to zip dist
-      - run: zip -r dist.zip dist/
+      - name: Making the zip file of dist for deployement
+        run: zip -r dist.zip dist/
 
       # to check whether the work done successfully
       - run: ls -la
+      # now this ubuntu machine should gain the access to the gcp server
+
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
 
 
 
