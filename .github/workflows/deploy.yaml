@@ -29,8 +29,38 @@ jobs:
       - name: Zipping to deploy 
         run: zip -r dist.zip css pages js index.html
       
-      - name: Testing
-        run: ls -la .
+      - name: Authentication to Google cloud
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ SERVICE_ACCOUNT_PRIVATE_KEY }}'
+
+      - name: Set up Cloud 
+        uses: 'google-github-actions/setup-gcloud@v0'
+
+      - name: 'Deploying the zip'
+        run: gcloud compute scp dist.zip root@dep-9-vm:/opt/apache/apache-tomcat-10.1.1/webapps/lms-backend
+
+      - name: Cleanup old stuff
+        run: >
+          gcloud compute ssh --zone="asia-south1-a" dep-9-vm 
+          --command="sudo rm -rf /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/css 
+          /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/pages 
+          /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/js 
+          /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/index.html
+          "
+      - name: Extracting the zip 
+        run: >
+          gcloud compute ssh --zone="asia-south1-a" dep-9-vm 
+          --command="sudo unzip /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/dist.zip"
+
+      - name: Cleaning leftovers
+        run: >
+          gcloud compute ssh --zone="asia-south1-a" dep-9-vm 
+          --command="sudo rm /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/dist.zip"
+          
+
+
+      
 
 
 
