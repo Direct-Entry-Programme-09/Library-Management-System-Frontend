@@ -1,0 +1,18 @@
+
+# name for the github action
+name: "CI/CD pipeline for lms frontend"
+# trigger on at what time
+on: 
+  push:
+    branches: 
+      - main
+# action
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "Hello CI/CD"
+
+
+
