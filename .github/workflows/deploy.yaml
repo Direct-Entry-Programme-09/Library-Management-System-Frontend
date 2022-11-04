@@ -51,7 +51,7 @@ jobs:
       - name: Extracting the zip 
         run: >
           gcloud compute ssh --zone="asia-south1-a" dep-9-vm 
-          --command="sudo unzip /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/dist.zip /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend"
+          --command="sudo unzip /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend/dist.zip -d /opt/apache/apache-tomcat-10.1.1/webapps/lms-backend"
 
       - name: Cleaning leftovers
         run: >
