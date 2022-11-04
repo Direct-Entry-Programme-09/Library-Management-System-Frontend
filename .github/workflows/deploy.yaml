@@ -9,10 +9,30 @@ on:
 # action
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # to run build use this machine
 
     steps:
-      - run: echo "Hello CI/CD"
+      - uses: actions/checkout@v3 # from the https://github.com/marketplace/actions/checkout
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18 # set our node version https://github.com/marketplace/actions/setup-node-js-environment
+
+      - run: npm install -g sass # command to install sass
+
+      - run: sass scss:css # convert scss to css
+
+      - run: mkdir dist # make dist directory
+
+      - run: cp -r css pages js index.html dist/ # copy below file to the dist directory
+      # - run: cp -r pages dist/ these all can be copy using above one line
+      # - run: cp -r js dist/
+      # - run: cp index.html dist/
+
+      # to zip dist
+      - run: zip -r dist.zip dist/
+
+      # to check whether the work done successfully
+      - run: ls -la
 
 
 
