@@ -1,0 +1,18 @@
+header {
+  position: relative;
+  vertical-align: middle;
+}
+header h3 ion-icon {
+  vertical-align: middle;
+}
+header a {
+  position: absolute;
+  right: 10px;
+  bottom: 20px;
+}
+header ion-icon {
+  width: 32px;
+  height: 32px;
+}
+
+/*# sourceMappingURL=manage-books.css.map */

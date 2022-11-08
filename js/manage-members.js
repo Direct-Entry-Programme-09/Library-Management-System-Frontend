@@ -1,4 +1,4 @@
-const API_END_POINT='http://34.93.50.37:8080/lms/api/members';
+const API_END_POINT='http://localhost:8080/lms/api/members';
 const pageSize = 3;
 let page = 1;
 
@@ -51,6 +51,11 @@ function getMembers(query=`${$('#txt-search').val()}`){
 
 function initPagination(totalMembers){
     const totalPages = Math.ceil(totalMembers / pageSize);
+    if(page>totalPages){
+        page=totalPages;
+        getMembers();
+        return;
+    }
     
     if (totalPages <= 1){
         $("#pagination").addClass('d-none');
@@ -124,6 +129,8 @@ $("#btn-new-member").click(()=> {
         .on('shown.bs.modal', ()=> {
             $("#txt-name").focus();
         });
+
+    $('#txt-id, #txt-name, #txt-address, #txt-contact').attr('disabled',false).val('');
 
     frmMemberDetail.show();
 });
@@ -228,4 +235,163 @@ function showToast(msg, msgType='warning'){
 
 $("#frm-member-detail").on('hidden.bs.modal',()=>{
     getMembers();
+});
+
+$('#tbl-members tbody').click(({target})=>{
+    if(!target) return;
+
+    let rwElm=null;
+    if(target instanceof HTMLTableRowElement){
+        rwElm= target;
+    }else if(target instanceof HTMLTableCellElement){
+        rwElm= target.parentElement;
+    }else{
+        return;
+    }
+    getMemberDetails($(rwElm.cells[0]).text());
+    
+});
+
+async function getMemberDetails(memberId){
+    //using fetch. if do not specify any options it default send a get request
+    try{//for resolve
+        const response=await fetch(`${API_END_POINT}/${memberId}`)
+        if(response.ok){
+            console.log(response)
+
+            const member=await response.json();
+            console.log(response)
+            const frmMemberDetail= new bootstrap.Modal(document.getElementById('frm-member-detail'));
+                
+                $('#frm-member-detail').removeClass('new').removeClass('edit');
+
+                $('#txt-id').attr('disabled',true).val(member.id);
+                $('#txt-name').attr('disabled',true).val(member.name);
+                $('#txt-address').attr('disabled',true).val(member.address);
+                $('#txt-contact').attr('disabled',true).val(member.contact);
+
+                frmMemberDetail.show();
+                
+        }else{
+            throw new Error(response.status);
+        }
+        
+    }catch(error){//for reject
+        showToast('Failed to fetch the member details');
+    }
+
+    // using XHR
+//     const http=new XMLHttpRequest();
+// // readystatechange is used to do more works
+//     http.addEventListener('readystatechange',()=>{
+//         if(http.readyState===XMLHttpRequest.DONE){
+//             if(http.status===200){
+//                 const member=JSON.parse(http.responseText);
+                
+//                 const frmMemberDetail= new bootstrap.Modal(document.getElementById('frm-member-detail'));
+                
+//                 $('#frm-member-detail').removeClass('new');
+
+//                 $('#txt-id').attr('disabled',true).val(member.id);
+//                 $('#txt-name').attr('disabled',true).val(member.name);
+//                 $('#txt-address').attr('disabled',true).val(member.address);
+//                 $('#txt-contact').attr('disabled',true).val(member.contact);
+
+//                 frmMemberDetail.show();
+//                 console.log(http.responseText);
+//             }else{
+//                 showToast('Failed to fetch the member details');
+//             }
+//         }
+
+//     });
+
+//     http.open('GET',`http://localhost:8080/lms/api/members/${memberId}`,true);//true : whether the async needed
+//     http.send();
+
+}
+
+$("#btn-edit").click(()=>{
+    $("#frm-member-detail").addClass('edit');
+    $("#txt-name, #txt-address, #txt-contact").attr('disabled',false);
+});
+
+$("#btn-delete").click(async()=>{
+    $('#overlay').removeClass('d-none');
+    try{
+        const response=await fetch(`${API_END_POINT}/${$('#txt-id').val()}`,{method : 'DELETE'});
+        console.log(response.status)
+        if(response.status===204){
+            
+            showToast('Member has been deleted successfully')
+            
+            // const frmMemberDetail =new bootstrap.Modal(document.getElementById('frm-member-detail'));
+
+            // frmMemberDetail.hide();
+            
+        }else{
+            throw new Error(response.status);
+        }
+
+    }catch(error){
+        showToast('Failed to delete the member try again')
+    }finally{
+        $('#overlay').addClass('d-none');
+    }
+    
+});
+
+$('#btn-update').click(async()=>{
+    $('#overlay').removeClass('d-none');
+    const name = $("#txt-name").val();
+    const address = $("#txt-address").val();
+    const contact = $("#txt-contact").val();
+    let validated = true;
+
+    $("#txt-name, #txt-address, #txt-contact").removeClass('is-invalid');
+
+    if (!/^\d{3}-\d{7}$/.test(contact)){
+        $("#txt-contact").addClass('is-invalid').select().focus();
+        validated = false;
+    }
+
+    if (!/^[A-Za-z0-9|,.:;#\/\\-]+$/.test(address)){
+        $("#txt-address").addClass('is-invalid').select().focus();
+        validated = false;
+    }
+
+    if (!/^[A-Za-z ]+$/.test(name)){
+        $("#txt-name").addClass('is-invalid').select().focus();
+        validated = false;
+    }
+
+    if (!validated) return;
+
+    try{
+        const response=await fetch(`${API_END_POINT}/${$("#txt-id").val()}`,
+    {
+        method: 'PATCH',
+        headers: {
+            'content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: $('#txt-id').val(),
+            name,address,contact //these are before defined
+        })
+    });//like this as this is not a get request we should state patch 
+    //as the method and we should inform in the header about content 
+    //type and also we can send a body like this
+
+    if(response.status===204){
+        showToast('Member has been updated successfully','success');
+    }else{
+        throw new Error(response.status);
+    }
+    }catch(error){
+        showToast('Failed to update the member, try again')
+    }finally{
+        $('#overlay').addClass('d-none');
+    }
+    
+
 });
